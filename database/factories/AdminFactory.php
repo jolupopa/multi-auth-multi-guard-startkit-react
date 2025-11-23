@@ -4,16 +4,17 @@ namespace Database\Factories;
 
 use App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
+  
+     /**
+     * The current password being used by the factory.
      */
-    protected $model = Admin::class;
+    protected static ?string $password;
+
+
 
     /**
      * Define the model's default state.
@@ -25,8 +26,9 @@ class AdminFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => Hash::make('password'),
-            'is_admin' => true,
+             'password' => static::$password ??= 'password',
+             'remember_token' => Str::random(10),
+            
         ];
     }
 }

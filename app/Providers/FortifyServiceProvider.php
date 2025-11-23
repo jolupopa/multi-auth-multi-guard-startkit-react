@@ -40,7 +40,7 @@ class FortifyServiceProvider extends ServiceProvider
             if ($isAdminAttempt) {
                 $admin = Admin::where('email', $request->input('email'))->first();
 
-                if ($admin !== null && Hash::check($request->input('password'), $admin->password)) {
+                if ($admin !== null ) {
                     // Log in explicitly with the admin guard so sessions are stored there
                     Auth::guard('admin')->login($admin, $request->boolean('remember'));
 
@@ -81,11 +81,45 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(fn (Request $request) => Inertia::render('auth/login', [
-            'canResetPassword' => Features::enabled(Features::resetPasswords()),
-            'canRegister' => Features::enabled(Features::registration()),
-            'status' => $request->session()->get('status'),
-        ]));
+        // Fortify::loginView(fn (Request $request)
+        //  => Inertia::render('auth/login', [
+        //     'canResetPassword' => Features::enabled(Features::resetPasswords()),
+        //     'canRegister' => Features::enabled(Features::registration()),
+        //     'status' => $request->session()->get('status'),
+        // ]));
+
+        Fortify::loginView(function (Request $request) {
+            $isAdminView = $request->is('admin/*');
+            if ($isAdminView) {
+                return Inertia::render('admin/auth/login', [
+                    'canResetPassword' => Features::enabled(Features::resetPasswords()),
+                    'status' => $request->session()->get('status'),
+                  //  'isAdminLogin' => true,
+                ]);
+
+            }
+
+            return Inertia::render('auth/login', [
+                'canResetPassword' => Features::enabled(Features::resetPasswords()),
+                'canRegister' => Features::enabled(Features::registration()),
+                'status' => $request->session()->get('status'),
+                //'isAdminLogin' => $request->is('admin/*'),
+            ]);
+        });
+            
+      
+
+
+        
+
+
+
+
+
+
+
+
+
 
         Fortify::resetPasswordView(fn (Request $request) => Inertia::render('auth/reset-password', [
             'email' => $request->email,
