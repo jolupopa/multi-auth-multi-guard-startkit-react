@@ -26,8 +26,12 @@ class SetSessionTable
             Config::set('session.table', 'admin_sessions');
             Config::set('fortify.guard', 'admin');
             Config::set('auth.defaults.guard', 'admin');
-        } 
-        
+        } else {
+            Config::set('session.cookie', 'laravel_session');
+            Config::set('session.table', 'sessions');
+            Config::set('fortify.guard', 'web');
+            Config::set('auth.defaults.guard', 'web');
+        }
      
 
         return $next($request);

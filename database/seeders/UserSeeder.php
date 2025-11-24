@@ -12,21 +12,27 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        User::create([
             'name' => 'Owner User',
             'email' => 'owner@gmail.com',
+            'email_verified_at' => now(),
+            'password' => 'password',
             'type' => 'owner',
         ]);
 
-        User::factory()->create([
+        User::create([
             'name' => 'Agency User',
-            'email' => 'agency@gmail.com',      
+            'email' => 'agency@gmail.com',  
+            'email_verified_at' => now(),
+            'password' => 'password',    
             'type' => 'agency',
         ]);
 
-        User::factory()->create([
+        User::create([
             'name' => 'Business User',
             'email' => 'business@gmail.com',
+            'email_verified_at' => now(),
+            'password' => 'password',
             'type' => 'business',
         ]);
     }

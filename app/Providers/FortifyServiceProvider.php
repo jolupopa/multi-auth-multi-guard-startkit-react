@@ -34,18 +34,14 @@ class FortifyServiceProvider extends ServiceProvider
         // Authenticate using a custom callback so we can support an "admin" guard
         // when the request targets the admin login route (POST /admin/login)
         Fortify::authenticateUsing(function (Request $request) {
-            // Detect admin login by route or explicit guard field
             $isAdminAttempt = $request->input('guard') === 'admin' || $request->is('admin/*');
 
             if ($isAdminAttempt) {
                 $admin = Admin::where('email', $request->input('email'))->first();
 
-                if ($admin !== null ) {
-                    // Log in explicitly with the admin guard so sessions are stored there
+                if ($admin && Hash::check($request->input('password'), $admin->password)) {
                     Auth::guard('admin')->login($admin, $request->boolean('remember'));
 
-                    // Ensure Fortify redirects to the admin dashboard after login
-                    // by setting the intended URL in the session.
                     if (function_exists('route')) {
                         $request->session()->put('url.intended', route('admin.dashboard'));
                     } else {
@@ -54,11 +50,14 @@ class FortifyServiceProvider extends ServiceProvider
 
                     return $admin;
                 }
+            } else {
+                $user = \App\Models\User::where('email', $request->input('email'))->first();
 
-                return null;
+                if ($user && Hash::check($request->input('password'), $user->password)) {
+                    return $user;
+                }
             }
 
-            // Return null to let Fortify continue with default user provider
             return null;
         });
 
