@@ -13,27 +13,27 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Owner User',
-            'email' => 'owner@gmail.com',
+            'name' => 'Client User',
+            'email' => 'client@gmail.com',
             'email_verified_at' => now(),
             'password' => 'password',
-            'type' => 'owner',
+            'type' => 'client',
         ]);
 
         User::create([
-            'name' => 'Agency User',
-            'email' => 'agency@gmail.com',  
+            'name' => 'Agent User',
+            'email' => 'agent@gmail.com',  
             'email_verified_at' => now(),
             'password' => 'password',    
-            'type' => 'agency',
+            'type' => 'agent',
         ]);
 
         User::create([
-            'name' => 'Business User',
-            'email' => 'business@gmail.com',
+            'name' => 'Company User',
+            'email' => 'company@gmail.com',
             'email_verified_at' => now(),
             'password' => 'password',
-            'type' => 'business',
+            'type' => 'company',
         ]);
     }
 }
