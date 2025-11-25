@@ -14,16 +14,15 @@ import { dashboard } from '@/routes';
 import { properties } from '@/routes/client';
 import { tasks } from '@/routes/agent';
 import { agents } from '@/routes/company';
-import { type NavItem } from '@/types';
+import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
+    const { auth } = usePage<SharedData>().props;
 
-const { auth } = usePage().props;
-
-const userType = auth?.user?.type;
+    const userType = auth.user?.type;
 
 
 const mainNavItems: NavItem[] = [
