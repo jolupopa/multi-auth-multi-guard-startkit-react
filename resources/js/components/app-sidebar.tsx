@@ -11,10 +11,20 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { properties } from '@/routes/client';
+import { tasks } from '@/routes/agent';
+import { agents } from '@/routes/company';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
+
+export function AppSidebar() {
+
+const { auth } = usePage().props;
+
+const userType = auth?.user?.type;
+
 
 const mainNavItems: NavItem[] = [
     {
@@ -23,6 +33,49 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
 ];
+
+
+
+const clientNavItems: NavItem[] = [
+    {
+        title: 'Propiedades',
+        href: properties(),
+        icon: LayoutGrid,
+    },
+];
+
+const agentNavItems: NavItem[] = [
+    {
+        title: 'Tareas',
+        href: tasks(),
+        icon: LayoutGrid,
+    },
+];
+
+const companyNavItems: NavItem[] = [
+    {
+        title: 'Agentes',
+        href: agents(),
+        icon: LayoutGrid,
+    },
+];
+
+let typeUserBaseNavItems = [...mainNavItems];
+
+if (userType === 'client') {
+    typeUserBaseNavItems = [...typeUserBaseNavItems, ...clientNavItems];
+} else if (userType === 'agent') {
+    typeUserBaseNavItems = [...typeUserBaseNavItems, ...agentNavItems];
+} else if (userType === 'company') {
+    typeUserBaseNavItems = [...typeUserBaseNavItems, ...companyNavItems];
+}
+
+const mainNavItemsFinal = typeUserBaseNavItems;
+
+
+
+
+
 
 const footerNavItems: NavItem[] = [
     {
@@ -37,7 +90,7 @@ const footerNavItems: NavItem[] = [
     },
 ];
 
-export function AppSidebar() {
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -53,7 +106,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={typeUserBaseNavItems} />
             </SidebarContent>
 
             <SidebarFooter>
