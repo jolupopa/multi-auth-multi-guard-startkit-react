@@ -58,13 +58,33 @@ export default function Register() {
                                 <InputError message={errors.email} />
                             </div>
 
+                            {/* NUEVO CAMPO: TIPO DE USUARIO */}
+                            <div className="grid gap-2">
+                                <Label htmlFor="type">Account Type</Label>
+                                <div className="relative">
+                                    <select
+                                        id="type"
+                                        name="type"
+                                        defaultValue="client"
+                                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                                        tabIndex={3}
+                                        required
+                                    >
+                                        <option value="client">Cliente (Busco Propiedades)</option>
+                                        <option value="agent">Agente (Vendo Propiedades)</option>
+                                        <option value="company">Compañía (Inmobiliaria)</option>
+                                    </select>
+                                </div>
+                                <InputError message={errors.type} />
+                            </div>
+
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input
                                     id="password"
                                     type="password"
                                     required
-                                    tabIndex={3}
+                                    tabIndex={4}
                                     autoComplete="new-password"
                                     name="password"
                                     placeholder="Password"
@@ -80,7 +100,7 @@ export default function Register() {
                                     id="password_confirmation"
                                     type="password"
                                     required
-                                    tabIndex={4}
+                                    tabIndex={5}
                                     autoComplete="new-password"
                                     name="password_confirmation"
                                     placeholder="Confirm password"
@@ -93,7 +113,7 @@ export default function Register() {
                             <Button
                                 type="submit"
                                 className="mt-2 w-full"
-                                tabIndex={5}
+                                tabIndex={6}
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}

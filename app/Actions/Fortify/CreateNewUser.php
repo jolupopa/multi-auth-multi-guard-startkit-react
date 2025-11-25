@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Enums\UserTypeEnum;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -27,12 +28,19 @@ class CreateNewUser implements CreatesNewUsers
                 'max:255',
                 Rule::unique(User::class),
             ],
+            'type' => [
+                'required',
+                'string', 
+                Rule::enum(UserTypeEnum::class)
+                ],
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
+        return
+        User::create([
             'name' => $input['name'],
             'email' => $input['email'],
+            'type' => $input['type'],
             'password' => $input['password'],
         ]);
     }
