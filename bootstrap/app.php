@@ -10,6 +10,7 @@ use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SetSessionTable;
+use App\Http\Middleware\CheckUserType;
 
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -37,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
          $middleware->alias([
             'guest' => RedirectIfAuthenticated::class, // multi guard
             'auth' => Authenticate::class, // multi guards
+            'type' => CheckUserType::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

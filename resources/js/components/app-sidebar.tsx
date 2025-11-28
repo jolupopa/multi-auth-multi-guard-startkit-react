@@ -11,9 +11,10 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { properties } from '@/routes/client';
-import { tasks } from '@/routes/agent';
-import { agents } from '@/routes/company';
+import  properties  from '@/routes/properties';
+import tasks from '@/routes/tasks';
+import teams from '@/routes/teams';
+
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
@@ -33,12 +34,10 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-
-
 const clientNavItems: NavItem[] = [
     {
         title: 'Propiedades',
-        href: properties(),
+        href: properties.index(),
         icon: LayoutGrid,
     },
 ];
@@ -46,30 +45,36 @@ const clientNavItems: NavItem[] = [
 const agentNavItems: NavItem[] = [
     {
         title: 'Tareas',
-        href: tasks(),
+        href: tasks.index(),
         icon: LayoutGrid,
     },
 ];
 
 const companyNavItems: NavItem[] = [
     {
-        title: 'Agentes',
-        href: agents(),
+        title: 'Equipos',
+        href: teams.index(),
         icon: LayoutGrid,
     },
 ];
 
-let typeUserBaseNavItems = [...mainNavItems];
+ let typeSpecificNavItems: NavItem[] = [];
+    
+    switch (userType) {
+        case 'client':
+            typeSpecificNavItems = clientNavItems;
+            break;
+        case 'agent':
+            typeSpecificNavItems = agentNavItems;
+            break;
+        case 'company':
+            typeSpecificNavItems = companyNavItems;
+            break;
+        default:
+            typeSpecificNavItems = [];
+    }
 
-if (userType === 'client') {
-    typeUserBaseNavItems = [...typeUserBaseNavItems, ...clientNavItems];
-} else if (userType === 'agent') {
-    typeUserBaseNavItems = [...typeUserBaseNavItems, ...agentNavItems];
-} else if (userType === 'company') {
-    typeUserBaseNavItems = [...typeUserBaseNavItems, ...companyNavItems];
-}
-
-const mainNavItemsFinal = typeUserBaseNavItems;
+    const mainNavItemsFinal = [...mainNavItems, ...typeSpecificNavItems];
 
 
 
@@ -105,7 +110,7 @@ const footerNavItems: NavItem[] = [
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={typeUserBaseNavItems} />
+                <NavMain items={mainNavItemsFinal} />
             </SidebarContent>
 
             <SidebarFooter>
