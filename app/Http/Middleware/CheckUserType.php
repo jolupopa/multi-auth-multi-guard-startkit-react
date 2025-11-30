@@ -18,7 +18,7 @@ class CheckUserType
      */
     public function handle(Request $request, Closure $next, ...$types)
     {
-         if (!Auth::check() || !in_array(Auth::user()->type->value, $types)) {
+         if ( !in_array(Auth::user()->type->value, $types)) {
            // dd( $types); client
            //dd(Auth::user()->type);
              return redirect()->route('error403');
